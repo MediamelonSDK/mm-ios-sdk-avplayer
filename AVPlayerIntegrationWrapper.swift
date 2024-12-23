@@ -757,9 +757,6 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
         if let playerItem = player?.currentItem,
            let group = playerItem.asset.mediaSelectionGroup(forMediaCharacteristic: AVMediaCharacteristic.visual) {
             let selectedOption = playerItem.currentMediaSelection.selectedMediaOption(in: group)
-            
-            if let selectedVideo = selectedOption?.displayName {
-            }
         }
         
         GenericMMWrapper.shared.reportMediaTrackInfo(isSubtitleActive: isSubtitleActive, subtitleTrack: subTitleTrack, audioTrack: audioTrack, isVDSActive: isVDSActive)

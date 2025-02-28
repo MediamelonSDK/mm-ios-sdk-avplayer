@@ -1508,9 +1508,6 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
                             GenericMMWrapper.shared.reportPlayerSeekCompleted(seekEndPos: Int(currentPlaybackPos))
                         }
                         
-                        //ENABLE IMA
-                        var adPlaying = MMIMAAdManager.sharedManager.isAdPlaying_;
-                        // for IMA
                         if (self?.currentState == .PAUSED || self?.currentState == .IDLE) {
                             AVPlayerIntegrationWrapper.logDebugStatement("--- MM Log => tick LATENCY: Report PLAYING ---")
                             self?.timeoutOccurred()

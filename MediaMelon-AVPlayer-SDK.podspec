@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "MediaMelon-AVPlayer-SDK"
-  spec.version      = "2.3.2"
+  spec.version      = "2.3.4"
   spec.summary      = "The MediaMelon Player SDK Provides SmartSight Analytics and QBR SmartStreaming."
   spec.description  = "The MediaMelon Player SDK adds SmartSight Analytics and QBR SmartStreaming capability to any media player and is available for all ABR media players."
   spec.homepage     = "https://github.com/MediamelonSDK/mm-ios-sdk-avplayer"
@@ -11,5 +11,5 @@ Pod::Spec.new do |spec|
   spec.swift_version = '5.0'
   spec.source       = { :git => "https://github.com/MediamelonSDK/mm-ios-sdk-avplayer.git", :tag => spec.version.to_s }
   spec.source_files    = 'AVPlayerIntegrationWrapper.swift'
-  spec.dependency 'MediaMelon-QoE-SDK', '~> 2.3.0'
+  spec.dependency 'MediaMelon-QoE-SDK'
 end

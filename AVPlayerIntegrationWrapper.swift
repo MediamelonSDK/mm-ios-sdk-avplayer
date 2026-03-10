@@ -11,13 +11,6 @@ import MediaMelonIMA
 import GoogleInteractiveMediaAds
 #endif
 
-#if canImport(MediaMelonIMAtvOS)
-#if os(tvOS)
-import MediaMelonIMAtvOS
-import GoogleInteractiveMediaAds
-#endif
-#endif
-
 #if canImport(MediaMelonNowtilus)
 import MediaMelonNowtilus
 #endif
@@ -272,7 +265,6 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
     private var isAutoErrorCaptureDisabled: Bool = false
     
     //ENABLE SSAI
-    
 #if canImport(MediaMelonNowtilus)
     private var vastURL = ""
     private var mutex = pthread_mutex_t()
@@ -282,7 +274,6 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
     var isLive: Bool = false
     public weak var genericAdDelegate: GenericAdProtocol?
 #endif
-    
     
     private enum AVPlayerPropertiesToObserve: String {
         case PlaybackRate = "rate",
@@ -325,11 +316,7 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
         IMASDK = "_IMA"
         #endif
         
-        #if canImport(MediaMelonIMAtvOS)
-        IMASDK = "_IMA"
-        #endif
-        
-        sdkVersion = coreSDK + IMASDK + "_AV_" + GenericMMWrapper.shared.getCoreSDKVersion() + ".4.0"
+        sdkVersion = coreSDK + IMASDK + "_AV_" + GenericMMWrapper.shared.getCoreSDKVersion() + ".5.0"
         super.init()
     }
     
@@ -503,19 +490,19 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
     }
     
     public func reportExperimentName(experimentName: String?) {
-        GenericMMWrapper.shared.reportExperimentName(experimentName: experimentName)
+        GenericMMWrapper.shared.reportExperimentName(experimentName: experimentName ?? "")
     }
     
     public func reportSubPropertyID(subPropertyId: String?) {
-        GenericMMWrapper.shared.reportSubPropertyID(subPropertyId: subPropertyId)
+        GenericMMWrapper.shared.reportSubPropertyID(subPropertyId: subPropertyId ?? "")
     }
     
     public func reportViewSessionID(viewSessionId: String?) {
-        GenericMMWrapper.shared.reportViewSessionID(viewSessionId: viewSessionId)
+        GenericMMWrapper.shared.reportViewSessionID(viewSessionId: viewSessionId ?? "")
     }
     
-    public func reportBasePlayerInfo(basePlayerName: String?, basePlayerVersion: String?) {
-        GenericMMWrapper.shared.reportBasePlayerInfo(basePlayerName: basePlayerName, basePlayerVersion: basePlayerVersion)
+    public func reportAppSessionID(appSessionId: String?) {
+        GenericMMWrapper.shared.reportAppSessionID(appSessionId: appSessionId ?? "")
     }
     
     public func reportPlayerResolution(width: Int, height: Int){
@@ -527,7 +514,7 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
     }
     
     public func reportCDN(cdn: String){
-        GenericMMWrapper.reportMetricValue(metricToOverride: .ServerAddress, value: cdn)
+        GenericMMWrapper.shared.reportStringDimension(dimension: .CDN, value: cdn)
     }
     
     public func updateStreamURL(streamURL: String){
@@ -586,15 +573,13 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
               let lastEvent = playerItem.accessLog()?.events.last else {
             return
         }
-        guard let indicatedStream = lastEvent.uri else { return }
-        guard let contentURL = self.contentURL, let streamUrl = URL(string: contentURL) else { return }
-        if let url = URL(string: indicatedStream) {
-            if url.host != streamUrl.host {
-                //Commenting this to consider CDN from the client directly
-//                GenericMMWrapper.reportMetricValue(metricToOverride: .ServerAddress, value: url.host ?? "")
-            }
-        }
-        // Use bitrate to determine bandwidth decrease or increase.
+        
+        /*
+            guard let indicatedStream = lastEvent.uri else { return }
+            guard let contentURL = self.contentURL, let streamUrl = URL(string: contentURL) else { return }
+            
+         // Use bitrate to determine bandwidth decrease or increase.
+        */
     }
     
     @objc func reportMediaSelectionChange()
@@ -1407,13 +1392,5 @@ extension AVPlayerIntegrationWrapper: AVPlayerItemMetadataCollectorPushDelegate 
     @objc public func setMMIMAContext(adLoadingContext: IMAAdsLoader, adDisplay: IMAAVPlayerVideoDisplay?, hasAdTag: Bool) {
         MMIMAAdManager.sharedManager.setIMAAdsContext(context: adLoadingContext, adsDisplay: adDisplay, hasAdTag: hasAdTag)
     }
-    #endif
-    
-    #if canImport(MediaMelonIMAtvOS)
-    #if os(tvOS)
-    @objc public func setMMIMAContext(adLoadingContext: IMAAdsLoader, adDisplay: IMAAVPlayerVideoDisplay?, hasAdTag: Bool) {
-        MMIMAAdManager.sharedManager.setIMAAdsContext(context: adLoadingContext, adsDisplay: adDisplay, hasAdTag: hasAdTag)
-    }
-    #endif
     #endif
 }

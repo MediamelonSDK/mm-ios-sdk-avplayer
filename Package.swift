@@ -6,8 +6,9 @@ let package = Package(
     name: "MediaMelon-AVPlayer-SDK",
 
     platforms: [
-        .iOS(.v15),
-        .tvOS(.v15)
+        .iOS(.v12),
+        .tvOS(.v12),
+        .visionOS(.v1)
     ],
 
     products: [
@@ -22,7 +23,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/MediamelonSDK/mm-ios-qoe-sdk",
-            exact: "2.16.0"
+            exact: "2.16.1"
         )
     ],
 
